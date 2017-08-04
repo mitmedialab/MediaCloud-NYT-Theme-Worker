@@ -1,0 +1,4 @@
+{
+  "name": "MediaCloud-NYT-Theme-Worker",
+  "description": "A service that will pull form a queue of stories with text and tag stories with the results from an install of the predict-news-labeller",
+}

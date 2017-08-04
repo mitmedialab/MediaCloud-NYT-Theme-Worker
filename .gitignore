@@ -1,4 +1,4 @@
 .idea
 venv
 *.pyc
-run.sh
+set_env_vars.sh
