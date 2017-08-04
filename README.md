@@ -12,7 +12,7 @@ Dev Installation
  2. `source venv/bin/activate` - to activate your virtualenv
  3. `pip install -r requirements.txt` - to install the dependencies
 
-+++ Environment Variables
+### Environment Variables
 
 Define these:
  * **RABBITMQ_URL** - `amqp://` path to your RabbitMQ server to pull jobs from
