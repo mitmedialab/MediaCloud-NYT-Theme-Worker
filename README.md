@@ -24,7 +24,7 @@ Define these:
 Use
 ---
 
-Test it locally by running `celery worker -A themeworker -l info`
+Test it locally by running `celery worker -A themeworker -l info`.
 
 Seed the database with a job by running `seed-db-with-query.py "QUERY_TO_RUN" STORIES_PER_FETCH`.  This can only handle 
 one job at a time. For example:
