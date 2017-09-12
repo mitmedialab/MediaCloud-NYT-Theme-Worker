@@ -3,3 +3,4 @@ celery
 mediacloud
 raven
 blinker
+pymongo

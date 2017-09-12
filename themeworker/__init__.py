@@ -4,14 +4,16 @@ import logging
 import mediacloud
 from raven.handlers.logging import SentryHandler
 from raven.conf import setup_logging
+from pymongo import MongoClient
 
 VERSION = "0.1.0"
+SERVICE_NAME = "NYT Theme Worker"
 
 # setup default file-based logging
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # set up logging
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 logger.info("Starting up NYT Theme Worker v{}".format(VERSION))
 
@@ -45,3 +47,10 @@ try:
     setup_logging(handler)
 except KeyError:
     logger.error("Missing SENTRY_DSN environment variable")
+
+try:
+    MONGO_URL = os.environ['MONGO_URL']
+    logger.info("MONGO_URL: {}".format(MONGO_URL))
+    db = MongoClient(MONGO_URL)['service-status-db']
+except KeyError:
+    logger.error("Missing MONGO_URL environment variable")
