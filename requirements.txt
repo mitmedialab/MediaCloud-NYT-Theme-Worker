@@ -4,3 +4,4 @@ mediacloud
 raven
 blinker
 pymongo
+flower
