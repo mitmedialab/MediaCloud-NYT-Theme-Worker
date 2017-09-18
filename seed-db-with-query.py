@@ -19,7 +19,7 @@ app_config = {
     "last_processed_stories_id": 0,
     "stories_to_fetch": stories_to_fetch,
     "created_at": time.strftime("%Y%m%d-%H%M%S"),
-    "retag": True,
+    "retag": False,
 }
 
 existing_app_config = db.apps.find_one({'name': SERVICE_NAME})
