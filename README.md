@@ -30,7 +30,7 @@ Seed the database with a job by running `seed-db-with-query.py "QUERY_TO_RUN" ST
 one job at a time. For example:
 
 ```
-python seed-db-with-query.py "(publish_date:[2017-07-01T00:00:00Z TO 2017-08-01T00:00:00Z]) AND (language:en)" 5000
+python seed-db-with-query.py "(publish_date:[2017-07-01T00:00:00Z TO 2017-08-01T00:00:00Z]) AND (language:en)" 10
 ```
 
 Then setup `queue-stories-from-db-query.py` to run on a cron - it will read the DB and page through stories matching the
