@@ -34,4 +34,4 @@ python seed-db-with-query.py "(publish_date:[2017-07-01T00:00:00Z TO 2017-08-01T
 ```
 
 Then setup `queue-stories-from-db-query.py` to run on a cron - it will read the DB and page through stories matching the
-database config.
+database config
