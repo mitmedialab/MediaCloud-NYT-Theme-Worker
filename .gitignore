@@ -1,4 +1,4 @@
 .idea
 venv
 *.pyc
-set_env_vars.sh
+config/app.config
