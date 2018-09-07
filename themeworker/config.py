@@ -33,7 +33,7 @@ def _write_to_file(filepath, vars):
     logger.debug(u"Writing configuration to {}".format(filepath))
     try:
         f = codecs.open(filepath, 'w', 'utf-8')
-        lines = ["{}={}\n".format(k, v) for k,v in vars.iteritems()]
+        lines = ["{}={}\n".format(k, v) for k, v in vars.items()]
         f.writelines(lines)
         f.close()
     except IOError:
