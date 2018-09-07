@@ -1,1 +1,1 @@
-celery worker -A themeworker -l info
+celery worker -A themeworker -l debug
