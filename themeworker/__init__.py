@@ -4,53 +4,37 @@ import logging
 import mediacloud
 from raven.handlers.logging import SentryHandler
 from raven.conf import setup_logging
-from pymongo import MongoClient
 
-VERSION = "0.1.0"
-SERVICE_NAME = "NYT Theme Worker"
+from themeworker.config import get_default_config, ConfigException
 
-# setup default file-based logging
+VERSION = "0.3.0"
+
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # set up logging
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logging.basicConfig(stream=sys.stdout, filename=os.path.join(base_dir, 'worker.log'),
+                    level=logging.INFO, format='%(asctime)s | %(levelname)s | %(name)s | %(message)s')
 logger = logging.getLogger(__name__)
+logger.info("------------------------------------------------------------------------")
 logger.info("Starting up NYT Theme Worker v{}".format(VERSION))
 
-try:
-    RABBIT_MQ_URL = os.environ['RABBITMQ_URL']
-    logger.info("RABBITMQ_URL: {}".format(RABBIT_MQ_URL))
-except KeyError:
-    logger.error("Missing RABBIT_MQ_URL environment variable")
-    sys.exit()
+config = get_default_config()
+
+BROKER_URL = config.get('BROKER_URL')
+logger.info("BROKER_URL: {}".format(BROKER_URL))
+
+MC_API_KEY = config.get('MC_API_KEY')
+mc = mediacloud.api.AdminMediaCloud(MC_API_KEY)
+logger.info("MC_API_KEY: {}".format(MC_API_KEY))
+
+LABELLER_URL = config.get('LABELLER_URL')
+logger.info("LABELLER_URL: {}".format(LABELLER_URL))
 
 try:
-    MC_API_KEY = os.environ['MC_API_KEY']
-    mc = mediacloud.api.AdminMediaCloud(MC_API_KEY)
-    logger.info("MC_API_KEY: {}".format(MC_API_KEY))
-except KeyError:
-    logger.error("Missing MC_API_KEY environment variable")
-    sys.exit()
-
-try:
-    LABELLER_URL = os.environ['LABELLER_URL']
-    logger.info("LABELLER_URL: {}".format(LABELLER_URL))
-except KeyError:
-    logger.error("Missing LABELLER_URL environment variable")
-    sys.exit()
-
-try:
-    SENTRY_DSN = os.environ['SENTRY_DSN']
+    SENTRY_DSN = config.get('SENTRY_DSN')
     logger.info("SENTRY_DSN: {}".format(SENTRY_DSN))
     handler = SentryHandler(SENTRY_DSN)
     handler.setLevel(logging.WARN)
     setup_logging(handler)
-except KeyError:
-    logger.error("Missing SENTRY_DSN environment variable")
-
-try:
-    MONGO_URL = os.environ['MONGO_URL']
-    logger.info("MONGO_URL: {}".format(MONGO_URL))
-    db = MongoClient(MONGO_URL)['service-status-db']
-except KeyError:
-    logger.error("Missing MONGO_URL environment variable")
+except ConfigException:
+    logger.info("No logging to sentry")

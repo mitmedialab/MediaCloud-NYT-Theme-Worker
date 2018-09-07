@@ -1,6 +1,5 @@
 .idea
-venv
 *.pyc
-set_env_vars.sh
+venv
 config/app.config
-worker.log
+*.log
