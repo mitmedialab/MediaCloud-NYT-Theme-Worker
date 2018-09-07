@@ -19,5 +19,9 @@ Use
 
 Run the workers in one window by doing: `celery worker -A themeworker -l info`.
 
+### Tagging all stories in a Topic
+
 In another window start up the story fetcher with `python queue-stories-in-topic.py 1234` (where 1234 is the id 
 of the topic you want to process),
+
+### Tagging stories matching a query

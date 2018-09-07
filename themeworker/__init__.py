@@ -7,14 +7,15 @@ from raven.conf import setup_logging
 
 from themeworker.config import get_default_config, ConfigException
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 
-# setup default file-based logging
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # set up logging
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logging.basicConfig(stream=sys.stdout, filename=os.path.join(base_dir, 'worker.log'),
+                    level=logging.INFO, format='%(asctime)s | %(levelname)s | %(name)s | %(message)s')
 logger = logging.getLogger(__name__)
+logger.info("------------------------------------------------------------------------")
 logger.info("Starting up NYT Theme Worker v{}".format(VERSION))
 
 config = get_default_config()

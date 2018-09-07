@@ -1,3 +1,7 @@
 BROKER_URL=redis://localhost:6379/1
 MC_API_KEY=KEY
 LABELLER_URL=http://predict-news-labels.myserver.info/
+QUERY=*
+FILTER_QUERY=
+PROCESSED_STORIES_ID=0
+STORIES_PER_PAGE=10

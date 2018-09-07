@@ -7,7 +7,7 @@ COMMENT_CHAR = u'#'
 logger = logging.getLogger(__name__)
 
 
-def _variables_from_file(filepath):
+def _load_from_file(filepath):
     vars = {}
     logger.info(u"Loading configuration from {}".format(filepath))
     try:
@@ -26,8 +26,18 @@ def _variables_from_file(filepath):
             vars[key] = value
     except IOError:
         logger.info(u"No local app.config file found; relying on environment variables for configuration")
-
     return vars
+
+
+def _write_to_file(filepath, vars):
+    logger.debug(u"Writing configuration to {}".format(filepath))
+    try:
+        f = codecs.open(filepath, 'w', 'utf-8')
+        lines = ["{}={}\n".format(k, v) for k,v in vars.iteritems()]
+        f.writelines(lines)
+        f.close()
+    except IOError:
+        logger.error(u"Failed trying to write updated configuration to {}".format(filepath))
 
 
 class ConfigException(Exception):
@@ -41,7 +51,7 @@ class EnvOrFileBasedConfig(object):
 
     def __init__(self, absolute_filepath):
         self.file_path = absolute_filepath
-        self.variables = _variables_from_file(self.file_path)  # a dict from VARIABLE_NAME to value
+        self.variables = _load_from_file(self.file_path)  # a dict from VARIABLE_NAME to value
 
     def get(self, key):
         variable_name = key.upper()
@@ -54,6 +64,23 @@ class EnvOrFileBasedConfig(object):
                 error_details = u"Config variable '{}' not declared in env-var nor in {}".format(variable_name, self.file_path)
                 logger.warn(error_details)
                 raise ConfigException(error_details)
+
+    def set(self, key, new_value):
+        variable_name = key.upper()
+        try:
+            current_value = os.environ[variable_name]
+            os.environ[variable_name] = new_value
+        except KeyError:
+            try:
+                current_value = self.variables[variable_name]
+            except KeyError:
+                error_details = u"Config variable '{}' not declared in env-var nor in {}".format(variable_name,
+                                                                                                 self.file_path)
+                logger.warn(error_details)
+                raise ConfigException(error_details)
+            self.variables[variable_name] = new_value
+            _write_to_file(self.file_path, self.variables)
+        logger.debug("Updated {} from {} to {}".format(key, current_value, new_value))
 
 
 def get_default_config():

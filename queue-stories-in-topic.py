@@ -19,7 +19,7 @@ logger.info("  {}".format(topic['name']))
 total_stories = mc.topicStoryCount(TOPIC_ID)['count']
 logger.info("  {} stories".format(total_stories))
 
-# page throug stories in topic
+# page through stories in topic
 link_id = None
 more_stories = True
 while more_stories:
