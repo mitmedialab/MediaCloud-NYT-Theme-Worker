@@ -1,5 +1,4 @@
 import os
-import sys
 import logging
 import mediacloud
 from raven.handlers.logging import SentryHandler

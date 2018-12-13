@@ -3,6 +3,4 @@ from celery import Celery
 
 from themeworker import BROKER_URL
 
-app = Celery('themeworker',
-             broker=BROKER_URL,
-             include=['themeworker.tasks'])
+app = Celery('themeworker', broker=BROKER_URL, include=['themeworker.tasks'])
