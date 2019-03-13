@@ -18,9 +18,7 @@ POST_WRITE_BACK = True
 
 @app.task(serializer='json', bind=True)
 def label_from_story_text(self, story):
-    '''
-    Take in a story with sentences and tag it with labels based on what the model says
-    '''
+    # Take in a story with sentences and tag it with labels based on what the model says
     try:
         results = get_labels(story['story_text'])
         _post_tags_from_results(story, results)
